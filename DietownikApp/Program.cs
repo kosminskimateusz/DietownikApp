@@ -6,6 +6,15 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["DietownikAPI"]) });
-Console.WriteLine(HttpClient.Ba)
+var apiUrl = new Uri(builder.Configuration["DietownikAPI"]);
+
+builder.Services.AddScoped(sp =>
+{
+    
+    return new HttpClient() { BaseAddress = apiUrl };
+
+});
+
+Console.WriteLine(apiUrl);
+
 await builder.Build().RunAsync();

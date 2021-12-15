@@ -17,4 +17,18 @@
     }
 
 
+
+    public class Rootobject
+    {
+        public Weather[] weathers { get; set; }
+    }
+
+    public class Weather
+    {
+        public string[] date { get; set; }
+        public int temperatureC { get; set; }
+        public string summary { get; set; }
+    }
+
+
 }

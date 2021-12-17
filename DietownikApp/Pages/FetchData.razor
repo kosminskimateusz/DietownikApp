@@ -1,5 +1,7 @@
 ﻿@page "/fetchdata"
-@inject HttpClient Http
+@using System.Text.Json.Serialization
+@using DietownikApp.Services
+@inject LocalService Http
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -41,17 +43,23 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        WeatherForecasts data = await Http.GetFromJsonAsync<WeatherForecasts>("sample-data/weather.json");
+        forecasts = data.weathers;
+    }
+
+    public class WeatherForecasts
+    {
+        [JsonPropertyName("data")]
+        public WeatherForecast[] weathers { get; set; }
     }
 
     public class WeatherForecast
     {
         public DateTime Date { get; set; }
-
         public int TemperatureC { get; set; }
-
-        public string? Summary { get; set; }
-
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        public string? Summary { get; set; }
     }
+
+
 }

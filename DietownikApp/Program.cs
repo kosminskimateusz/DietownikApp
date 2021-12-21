@@ -38,16 +38,3 @@ builder.Services.AddHttpClient<DietownikAPIService>(client =>
 
 
 await builder.Build().RunAsync();
-
-
-public class Rootobject
-{
-    public Datum[] data { get; set; }
-}
-
-public class Datum
-{
-    public string date { get; set; }
-    public int temperatureC { get; set; }
-    public string summary { get; set; }
-}

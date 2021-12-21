@@ -9,9 +9,9 @@
             this.httpClient = httpClient;
         }
 
-        public string GetBaseUrl()
+        public HttpClient GetHttpClient()
         {
-            return httpClient.BaseAddress.ToString();
+            return httpClient;
         }
     }
 }

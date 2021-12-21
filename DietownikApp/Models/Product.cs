@@ -1,8 +1,11 @@
-﻿namespace DietownikApp.Models
+﻿using System.Text.Json.Serialization;
+
+namespace DietownikApp.Models
 {
-    public class Root
+    public class Products
     {
-        public Product[] data { get; set; }
+        [JsonPropertyName("data")]
+        public Product[] ProductsList { get; set; }
         public object error { get; set; }
     }
 
@@ -15,20 +18,4 @@
         public float proteins { get; set; }
         public int id { get; set; }
     }
-
-
-
-    public class Rootobject
-    {
-        public Weather[] weathers { get; set; }
-    }
-
-    public class Weather
-    {
-        public string[] date { get; set; }
-        public int temperatureC { get; set; }
-        public string summary { get; set; }
-    }
-
-
 }

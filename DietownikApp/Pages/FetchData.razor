@@ -1,7 +1,10 @@
 ﻿@page "/fetchdata"
 @using System.Text.Json.Serialization
+@using DietownikApp.Models
 @using DietownikApp.Services
-@inject LocalService Http
+@inject LocalService HttpLocalService
+@inject DietownikAPIService HttpDietownikAPIService
+@inject HttpClient Http
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -38,14 +41,44 @@ else
     </table>
 }
 
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Kcal</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in products)
+            {
+                <tr>
+                    <td>@product.name</td>
+                    <td>@product.kcal</td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+<br />
+@HttpLocalService.GetHttpClient().BaseAddress.ToString();
+<br />
+@HttpDietownikAPIService.GetHttpClient().BaseAddress.ToString();
+
 @code {
     private WeatherForecast[]? forecasts;
 
-    protected override async Task OnInitializedAsync()
-    {
-        WeatherForecasts data = await Http.GetFromJsonAsync<WeatherForecasts>("sample-data/weather.json");
-        forecasts = data.weathers;
-    }
 
     public class WeatherForecasts
     {
@@ -60,6 +93,17 @@ else
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
         public string? Summary { get; set; }
     }
+}
 
+@code {
+    private Product[]? products;
 
+    protected override async Task OnInitializedAsync()
+    {
+        Products dataProducts = await HttpDietownikAPIService.GetHttpClient().GetFromJsonAsync<Products>("products");
+        products = dataProducts.ProductsList;
+
+        WeatherForecasts dataWeathrts = await HttpLocalService.GetHttpClient().GetFromJsonAsync<WeatherForecasts>("sample-data/weather.json");
+        forecasts = dataWeathrts.weathers;
+    }
 }

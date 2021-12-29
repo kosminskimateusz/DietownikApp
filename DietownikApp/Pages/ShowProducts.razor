@@ -1,0 +1,60 @@
+﻿@page "/showProducts"
+@using System.Text.Json.Serialization
+@using DietownikApp.Models
+@using DietownikApp.Services
+@*@inject DietownikAPIService HttpDietownikAPIService*@
+@inject HttpClient Http
+
+<PageTitle>Products</PageTitle>
+
+<h1>Products List</h1>
+
+@if (products == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div style="width: 350px;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in products)
+                {
+                    <tr>
+                        <td>@product.name</td>
+                        <td><button class="btn btn-outline-dark">Edit</button></td>
+                        <td><button class="btn btn-outline-danger">Delete</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <button class="btn btn-outline-primary">Add Product</button>
+    </div>
+}
+
+
+@*<br />
+@HttpDietownikAPIService.GetHttpClient().BaseAddress.ToString();*@
+
+@code {
+
+}
+
+@code {
+    private Product[] products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Products dataProducts = await Http.GetFromJsonAsync<Products>("products");
+        //Products dataProducts = await HttpDietownikAPIService.GetHttpClient().GetFromJsonAsync<Products>("products");
+        products = dataProducts.ProductsList;
+    }
+}

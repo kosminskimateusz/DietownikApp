@@ -7,34 +7,25 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-//// HttpClient for Local
-//builder.Services.AddScoped(x =>
+
+//builder.Services.AddHttpClient<LocalService>(client =>
 //{
-//    return new HttpClient() { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
+//    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
 //});
 
-//// HttpClient for DietownikAPI
-//var apiUrl = new Uri(builder.Configuration["DietownikAPI"]);
-
-//builder.Services.AddScoped(sp =>
+//builder.Services.AddHttpClient<DietownikAPIService>(client =>
 //{
-
-//    return new HttpClient() { BaseAddress = apiUrl };
-
+//    client.BaseAddress = new Uri(builder.Configuration["DietownikAPI"]);
 //});
 
-//Console.WriteLine(apiUrl);
-
-
-builder.Services.AddHttpClient<LocalService>(client =>
+builder.Services.AddScoped(x =>
 {
-    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
-});
-
-builder.Services.AddHttpClient<DietownikAPIService>(client =>
-{
-    client.BaseAddress = new Uri(builder.Configuration["DietownikAPI"]);
+    var apiUrl = new Uri(builder.Configuration["DietownikAPI"]);
+    return new HttpClient() { BaseAddress = apiUrl };
 });
 
 
-await builder.Build().RunAsync();
+var host = builder.Build();
+
+
+await host.RunAsync();

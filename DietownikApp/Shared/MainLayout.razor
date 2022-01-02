@@ -1,5 +1,11 @@
 ﻿@inherits LayoutComponentBase
 
+@if (@a == 1)
+{
+    <Login />
+}
+else
+{
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -15,3 +21,9 @@
         </article>
     </main>
 </div>
+}
+
+
+@code {
+    public int a = 0;
+}
